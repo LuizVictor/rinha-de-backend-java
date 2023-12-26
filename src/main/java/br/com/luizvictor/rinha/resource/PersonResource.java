@@ -19,9 +19,20 @@ public class PersonResource {
 
     @PostMapping("/pessoas")
     public ResponseEntity<Person> save(@RequestBody Person person) {
-        var saved = new Person(UUID.randomUUID(), person.getNome(), person.getApelido(), person.getNascimento(), person.getStack());
-        repository.save(saved);
-        return ResponseEntity.created(URI.create("/pessoas/" + saved.getId())).body(saved);
+        try {
+            var saved = new Person(
+                    UUID.randomUUID(),
+                    person.getNome(),
+                    person.getApelido(),
+                    person.getNascimento(),
+                    person.getStack()
+            );
+
+            repository.save(saved);
+            return ResponseEntity.created(URI.create("/pessoas/" + saved.getId())).body(saved);
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
     }
 
     @GetMapping("pessoas/{id}")
@@ -37,13 +48,17 @@ public class PersonResource {
 
     @GetMapping("/pessoas")
     public ResponseEntity<List<Person>> findAll(@RequestParam(name = "t") String term) {
+        if (term.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
         var people = repository.findAllByTerm(term);
         return ResponseEntity.ok(people);
     }
 
     @GetMapping("/contagem-pessoas")
     public ResponseEntity<String> count() {
-        String count = Long.toString(repository.count());
+        String count = String.valueOf(repository.count());
         return ResponseEntity.ok().body(count);
     }
 }

@@ -1,25 +1,24 @@
 package br.com.luizvictor.rinha.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "people")
-public class Person {
+public class Person implements Serializable {
     @Id
     private UUID id;
-    @Column(unique = true, length = 32)
-    @NotNull
+    @Column(length = 32, nullable = false)
     private String nome;
-    @NotNull
-    @Column(unique = true, length = 100)
+    @Column(unique = true, length = 100, nullable = false)
     private String apelido;
+    @Column(nullable = false)
     private String nascimento;
     @ElementCollection
-    @Column(name = "stack")
     private List<String> stack;
 
     public Person(UUID id, String nome, String apelido, String nascimento, List<String> stack) {
@@ -51,5 +50,18 @@ public class Person {
 
     public List<String> getStack() {
         return stack;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
