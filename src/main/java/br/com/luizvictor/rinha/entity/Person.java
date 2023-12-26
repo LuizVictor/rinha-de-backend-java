@@ -18,7 +18,7 @@ public class Person implements Serializable {
     private String apelido;
     @Column(nullable = false)
     private String nascimento;
-    @ElementCollection
+    @Convert(converter = StringConverter.class)
     private List<String> stack;
 
     public Person(UUID id, String nome, String apelido, String nascimento, List<String> stack) {

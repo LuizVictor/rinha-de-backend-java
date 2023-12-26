@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, UUID> {
-    @Query("SELECT p FROM Person p JOIN p.stack s WHERE p.nome LIKE CONCAT('%', :term, '%') OR p.apelido LIKE CONCAT('%', :term, '%') OR s LIKE CONCAT('%', :term ,'%') ")
+    @Query(nativeQuery = true, value = "SELECT p.* FROM people p WHERE p.nome LIKE CONCAT('%', :term, '%') OR p.apelido LIKE CONCAT('%', :term, '%') OR p.stack LIKE CONCAT('%', :term ,'%') ")
     List<Person> findAllByTerm(String term);
 }
