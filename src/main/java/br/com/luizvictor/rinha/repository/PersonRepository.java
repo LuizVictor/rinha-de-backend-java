@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, UUID> {
-    @Query(nativeQuery = true, value = "SELECT p.* FROM people p WHERE p.nome LIKE %:term% OR p.apelido LIKE %:term% OR p.stack LIKE %:term%")
+    @Query(nativeQuery = true, value = "SELECT p.* FROM people p WHERE searchable ILIKE %:term%")
     List<Person> findAllByTerm(@Param("term") String term);
 }
