@@ -11,6 +11,7 @@ import java.util.UUID;
 @Table(name = "people")
 public class Person implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @Column(length = 32, nullable = false)
     private String nome;
@@ -21,8 +22,7 @@ public class Person implements Serializable {
     @Convert(converter = StringConverter.class)
     private List<String> stack;
 
-    public Person(UUID id, String nome, String apelido, String nascimento, List<String> stack) {
-        this.id = id;
+    public Person(String nome, String apelido, String nascimento, List<String> stack) {
         this.nome = nome;
         this.apelido = apelido;
         this.nascimento = nascimento;

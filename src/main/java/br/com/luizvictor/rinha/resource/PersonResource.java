@@ -3,8 +3,6 @@ package br.com.luizvictor.rinha.resource;
 import br.com.luizvictor.rinha.entity.Person;
 import br.com.luizvictor.rinha.repository.PersonRepository;
 import jakarta.transaction.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +13,6 @@ import java.util.UUID;
 @RestController
 public class PersonResource {
     private final PersonRepository repository;
-    private final Logger log = LoggerFactory.getLogger(PersonResource.class);
 
     public PersonResource(PersonRepository repository) {
         this.repository = repository;
@@ -25,7 +22,6 @@ public class PersonResource {
     @Transactional
     public ResponseEntity<Person> save(@RequestBody Person person) {
         var saved = new Person(
-                UUID.randomUUID(),
                 person.getNome(),
                 person.getApelido(),
                 person.getNascimento(),
@@ -53,7 +49,6 @@ public class PersonResource {
             return ResponseEntity.badRequest().build();
         }
 
-        log.info("Searching for: " + term);
         var people = repository.findAllByTerm(term);
         return ResponseEntity.ok(people);
     }
