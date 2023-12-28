@@ -1,6 +1,14 @@
 server:
   port: ${SERVER_PORT:8080}
 
+  compression:
+    enabled: true
+    min-response-size: 1024
+
+  tomcat:
+    connection-timeout: 120000
+    max-connections: 1024
+
 spring:
   datasource:
     url: ${DATABASE_URL}
@@ -10,5 +18,7 @@ spring:
   jpa:
     open-in-view: false
     show-sql: true
-    hibernate:
-      ddl-auto: update
+
+  mvc:
+    async:
+      request-timeout: 600000
